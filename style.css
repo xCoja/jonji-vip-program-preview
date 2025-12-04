@@ -154,7 +154,7 @@ body {
   /* hidden by default on mobile */
   .nav {
     position: fixed;
-    top: 80px;                  /* match .header height (80 or 100) */
+    top: 80px !important;                  
     left: 0;
     right: 0;
     background-color: #101010;
@@ -1749,6 +1749,8 @@ body {
     display: none; /* hide nav links on mobile */
     margin-left: 0; /* override desktop */
     z-index: 1000;
+
+
   }
 
   /* NAV when open */
