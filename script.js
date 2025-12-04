@@ -1,26 +1,33 @@
-// Basic interactivity: mobile nav toggle + smooth scroll
-
 document.addEventListener("DOMContentLoaded", () => {
-  const navToggle = document.getElementById("nav-toggle");
-  const navLinks = document.getElementById("nav-links");
-  const scrollButtons = document.querySelectorAll("[data-scroll-target]");
+  // =====================
+  // NAV / HAMBURGER
+  // =====================
+  const navToggle = document.querySelector(".nav-toggle");
+  const nav = document.querySelector(".nav");
 
-  // Mobile nav
-  if (navToggle && navLinks) {
+  if (navToggle && nav) {
     navToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("open");
-      navToggle.classList.toggle("open");
+      const isOpen = nav.classList.toggle("nav-open");
+      navToggle.classList.toggle("nav-open");
+      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      navToggle.textContent = isOpen ? "✕" : "☰";
     });
 
-    navLinks.addEventListener("click", (e) => {
+    nav.addEventListener("click", (e) => {
       if (e.target.tagName.toLowerCase() === "a") {
-        navLinks.classList.remove("open");
-        navToggle.classList.remove("open");
+        nav.classList.remove("nav-open");
+        navToggle.classList.remove("nav-open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.textContent = "☰";
       }
     });
   }
 
-  // Smooth scroll for "Explore Benefits" button (and any other with data-scroll-target)
+  // =====================
+  // Smooth scroll for data-scroll-target buttons
+  // =====================
+  const scrollButtons = document.querySelectorAll("[data-scroll-target]");
+
   scrollButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const targetSelector = btn.getAttribute("data-scroll-target");
@@ -37,16 +44,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
-});
-document.addEventListener("DOMContentLoaded", () => {
-  // SVI interni linkovi koji počinju sa #
+
+  // =====================
+  // Smooth scroll for internal anchor links href="#..."
+  // =====================
   const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
-  anchorLinks.forEach(link => {
+  anchorLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
       const targetId = link.getAttribute("href");
 
-      // ignorisi "prazan" #
+      // ignore plain "#"
       if (!targetId || targetId === "#") return;
 
       const targetEl = document.querySelector(targetId);
@@ -54,12 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       e.preventDefault();
 
-      // visina navbara da ne preseče sekciju
-      const nav = document.querySelector(".nav");
-      const navHeight = nav ? nav.offsetHeight : 0;
+      const navEl = document.querySelector(".nav");
+      const navHeight = navEl ? navEl.offsetHeight : 0;
 
       const elementTop = targetEl.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementTop - navHeight - 16; // malo lufta
+      const offsetPosition = elementTop - navHeight - 16;
 
       window.scrollTo({
         top: offsetPosition,
@@ -67,13 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
-});
 
-
-document.addEventListener("DOMContentLoaded", () => {
+  // =====================
+  // Discord redirect buttons
+  // =====================
   const discordURL = "https://discord.com/invite/vQtC77g7vr";
 
-  // list ONLY the button IDs you want to redirect
   const redirectButtons = [
     "btn-become-vip",
     "btn-learn-more",
@@ -84,11 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
     "discord-2",
     "discord-3",
     "discord-4",
-
     // add more IDs here
   ];
 
-  redirectButtons.forEach(id => {
+  redirectButtons.forEach((id) => {
     const btn = document.getElementById(id);
     if (!btn) return;
 
@@ -97,18 +102,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // =====================
+  // Redirect to chips.gg
+  // =====================
+  const specialLinks = {
+    "vip-transfer-btn": "https://chips.gg/",
+  };
 
-// redirect to chips.gg
-const specialLinks = {
-  "vip-transfer-btn": "https://chips.gg/"
-};
+  Object.keys(specialLinks).forEach((id) => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
 
-Object.keys(specialLinks).forEach(id => {
-  const btn = document.getElementById(id);
-  if (!btn) return;
-
-  btn.addEventListener("click", () =>{
-    window.open(specialLinks[id], "_blank");
+    btn.addEventListener("click", () => {
+      window.open(specialLinks[id], "_blank");
+    });
   });
-});
 });
