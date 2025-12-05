@@ -368,8 +368,7 @@ body {
   overflow: hidden;
   font-weight: 600;
   white-space: nowrap;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease,
-    background 0.16s ease, color 0.16s ease;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
 }
 
 
@@ -619,11 +618,13 @@ body {
 
 /* flex row that holds all steps + arrows */
 .transfer-flow {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr; /* step - arrow - step - arrow - step */
+  column-gap: 22px;
   align-items: stretch;
-  justify-content: space-between;
-  gap: 22px;
 }
+
+
 
 /* each step card */
 .transfer-step {
@@ -633,10 +634,19 @@ body {
   background: radial-gradient(circle at 0 0, #17161f 0, #050508 55%);
   border: 1px solid rgba(255, 255, 255, 0.04);
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.7);
+
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  /* 💡 This centers everything INSIDE the step card */
+  align-items: center;
+  text-align: center;
 }
+
+
+
+
 
 /* center/highlight step */
 .transfer-step--highlight {
@@ -690,24 +700,37 @@ body {
 /* bottom mini-stats row */
 .transfer-meta-row {
   margin-top: 18px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px 18px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr; /* same pattern */
+  column-gap: 22px;
+  align-items: center;
 }
 
 .transfer-meta-item {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 8px;
   font-size: 11px;
   color: var(--vip-text-muted);
+  text-align: center;
 }
 
 .transfer-meta-item i {
   font-size: 12px;
   color: var(--vip-gold-soft);
 }
+
+/* place each meta item under the matching card */
+.transfer-meta-item:nth-child(1) { grid-column: 1; }
+.transfer-meta-item:nth-child(2) { grid-column: 3; }
+.transfer-meta-item:nth-child(3) { grid-column: 5; }
+
+.transfer-meta-item:nth-child(1) {
+  grid-column: 1;
+  transform: translateX(-15px); /* try -2px or -3px */
+}
+
 
 /* ===== CONTENT UNDER PANEL ===== */
 
@@ -798,11 +821,42 @@ body {
     align-items: flex-start;
   }
 
+    .transfer-arrow {
+    transform: rotate(90deg);
+    font-size: 16px;
+  }
+
+  /* stack meta items vertically under the panel */
+  .transfer-meta-row {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+  }
+
+  .transfer-meta-item {
+    justify-content: flex-start;
+  }
+
+  /* remove desktop grid placement on mobile */
+  .transfer-meta-item:nth-child(1),
+  .transfer-meta-item:nth-child(2),
+  .transfer-meta-item:nth-child(3) {
+    grid-column: auto !important;
+  }
+
+.transfer-meta-item:nth-child(1) {
+  grid-column: 1;
+  transform: translateX(-0px); /* try -2px or -3px */
+}
   .transfer-tagline {
     font-size: 11px;
   }
 
   .transfer-flow {
+    display: flex !important;
     flex-direction: column;
     gap: 14px;
   }
